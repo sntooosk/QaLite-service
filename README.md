@@ -9,7 +9,11 @@ manutenção sem depender de frameworks externos.
 | Método | Rota | Descrição |
 | --- | --- | --- |
 | `GET` | `/health` | Retorna `status: ok` para verificação rápida. |
+| `GET` | `/openapi.json` | Exibe o documento OpenAPI usado pelo Swagger. |
+| `GET` | `/docs` | Interface Swagger UI para testar a API. |
 | `POST` | `/slack/task-summary` | Envia um resumo simples de tarefa para um webhook do Slack. |
+
+> A documentação visual usa o CDN do Swagger UI. Caso prefira usar apenas a especificação, consuma `/openapi.json` diretamente.
 
 ## Variáveis de ambiente
 
@@ -27,7 +31,7 @@ PORT=3000
 npm run build   # Transpila os arquivos TypeScript para a pasta dist
 npm start       # Executa o build gerado
 npm run dev     # Observa mudanças e recompila automaticamente
-npm run lint    # Garante que o código JavaScript emitido esteja padronizado
+npm run lint    # Lembra de rodar o build antes para gerar a pasta dist
 npm run format  # Formata o código fonte com Prettier
 ```
 
