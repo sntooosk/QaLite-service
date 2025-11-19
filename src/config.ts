@@ -3,43 +3,32 @@ import { resolve } from 'node:path'
 
 const envPath = resolve(process.cwd(), '.env')
 
-if (existsSync(envPath)) {
-  const raw = readFileSync(envPath, 'utf8')
-  raw
+const loadEnvFile = (): void => {
+  if (!existsSync(envPath)) return
+
+  readFileSync(envPath, 'utf8')
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line && !line.startsWith('#'))
     .forEach((line) => {
       const [key, ...rest] = line.split('=')
-      if (!key || process.env[key]) {
-        return
-      }
+      if (!key || process.env[key]) return
 
-      const value = rest.join('=').trim().replace(/^['"]|['"]$/g, '')
-      process.env[key] = value
+      process.env[key] = rest.join('=').trim().replace(/^['"]|['"]$/g, '')
     })
 }
 
-const parseList = (value: string | undefined, fallback: string[]): string[] => {
-  if (!value) {
-    return [...fallback]
-  }
-
-  return value
-    .split(',')
-    .map((entry) => entry.trim())
-    .filter(Boolean)
-}
+const parseList = (value: string | undefined, fallback: string[]): string[] =>
+  value?.split(',').map((entry) => entry.trim()).filter(Boolean) ?? [...fallback]
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'https://qualitydigital-qamanager.vercel.app',
 ]
 
-const normalize = (value: string | undefined): string | undefined => {
-  const trimmed = value?.trim()
-  return trimmed ? trimmed : undefined
-}
+const normalize = (value: string | undefined): string | undefined => value?.trim() || undefined
+
+loadEnvFile()
 
 export interface AppConfig {
   allowedOrigins: string[]
