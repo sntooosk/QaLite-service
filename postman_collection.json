@@ -1,0 +1,81 @@
+{
+  "info": {
+    "_postman_id": "bb6507cd-7b6d-41fa-8c44-afa7d0f5d991",
+    "name": "QaLite Service",
+    "description": "Coleção com os endpoints HTTP expostos pelo QaLite Service para facilitar os testes locais em http://localhost:3000.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Verifica se o serviço está saudável e pronto para receber requisições."
+      },
+      "response": []
+    },
+    {
+      "name": "Listar builds do BrowserStack",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/browserstack/builds",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "browserstack",
+            "builds"
+          ]
+        },
+        "description": "Retorna a lista de builds retornados pela API do BrowserStack configurada no serviço."
+      },
+      "response": []
+    },
+    {
+      "name": "Enviar resumo da tarefa para o Slack",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"submittedBy\": {\n    \"name\": \"Maria QA\",\n    \"email\": \"maria@example.com\"\n  },\n  \"scenario\": {\n    \"title\": \"Fluxo de pagamento via Pix\",\n    \"stage\": \"Homologação\",\n    \"category\": \"Financeiro\"\n  },\n  \"environment\": {\n    \"label\": \"Sandbox QA\",\n    \"taskUrl\": \"https://app.asana.com/0/123456789/987654321\"\n  },\n  \"test\": {\n    \"platform\": \"BrowserStack - Chrome 114 (Windows 11)\",\n    \"status\": \"Aprovado\",\n    \"durationMs\": 125000,\n    \"completedAt\": 1714418400000\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/slack/task-summary",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "slack",
+            "task-summary"
+          ]
+        },
+        "description": "Dispara para o Slack o resumo de uma tarefa concluída. Informe ao menos o campo scenario.title para evitar erro 400."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
