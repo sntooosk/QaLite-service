@@ -36,7 +36,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"environmentSummary\": {\n    \"totalTime\": \"00:15:23\",\n    \"scenariosCount\": 3,\n    \"executedScenariosMessage\": \"3 cenários executados\",\n    \"storyfixCount\": 0,\n    \"jira\": \"Não informado\",\n    \"suiteName\": \"Teste\",\n    \"suiteDetails\": \"3 cenários vinculados\",\n    \"participantsCount\": 1,\n    \"monitoredUrls\": [\n      \"https://qa-lite.example.com/\"\n    ],\n    \"attendees\": [\n      {\n        \"name\": \"Maria QA\",\n        \"email\": \"maria@example.com\"\n      }\n    ]\n  }\n}"
+          "raw": "{\n  \"environmentSummary\": {\n    \"identifier\": \"Ambiente de Teste\",\n    \"totalTime\": \"00:15:23\",\n    \"scenariosCount\": 3,\n    \"executedScenariosMessage\": \"3 cenários executados\",\n    \"fix\": {\n      \"type\": \"bug\",\n      \"value\": 3\n    },\n    \"jira\": \"Não informado\",\n    \"suiteName\": \"Teste\",\n    \"suiteDetails\": \"3 cenários vinculados\",\n    \"participantsCount\": 1,\n    \"monitoredUrls\": [\n      \"https://qa-lite.example.com/\"\n    ],\n    \"attendees\": [\n      {\n        \"name\": \"Maria QA\",\n        \"email\": \"maria@example.com\"\n      }\n    ]\n  }\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/slack/task-summary",

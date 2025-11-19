@@ -4,12 +4,16 @@ export interface EnvironmentSummaryAttendee {
 }
 
 export interface EnvironmentSummaryPayload {
+  identifier?: string
   totalTime?: string
   totalTimeMs?: number
   scenariosCount?: number
   executedScenariosCount?: number
   executedScenariosMessage?: string
-  storyfixCount?: number
+  fix?: {
+    type?: 'bug' | 'storyfixes'
+    value?: number
+  }
   jira?: string
   suiteName?: string
   suiteDetails?: string
