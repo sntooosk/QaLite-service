@@ -79,11 +79,12 @@ export class TaskSummaryFormatter {
       pushField('Execução', executedMessage)
     }
 
-    const storyfixValue =
-      typeof summary.storyfixCount === 'number' && summary.storyfixCount >= 0
-        ? String(summary.storyfixCount)
+    const fixTypeLabel = summary.fix?.type === 'storyfixes' ? 'Storyfixes' : 'Bugs'
+    const fixValue =
+      typeof summary.fix?.value === 'number' && summary.fix.value >= 0
+        ? String(summary.fix.value)
         : '0'
-    pushField('Storyfix registrados', storyfixValue)
+    pushField(`${fixTypeLabel} registrados`, fixValue)
 
     const jiraValue = toText(summary.jira) || 'Não informado'
     pushField('Jira', jiraValue)
