@@ -14,19 +14,26 @@ const loadEnvFile = (): void => {
       const [key, ...rest] = line.split('=')
       if (!key || process.env[key]) return
 
-      process.env[key] = rest.join('=').trim().replace(/^['"]|['"]$/g, '')
+      process.env[key] = rest
+        .join('=')
+        .trim()
+        .replace(/^['"]|['"]$/g, '')
     })
 }
 
 const parseList = (value: string | undefined, fallback: string[]): string[] =>
-  value?.split(',').map((entry) => entry.trim()).filter(Boolean) ?? [...fallback]
+  value
+    ?.split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean) ?? [...fallback]
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'https://qualitydigital-qamanager.vercel.app',
 ]
 
-const normalize = (value: string | undefined): string | undefined => value?.trim() || undefined
+const normalize = (value: string | undefined): string | undefined =>
+  value?.trim() || undefined
 
 loadEnvFile()
 

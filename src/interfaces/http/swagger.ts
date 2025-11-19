@@ -37,6 +37,9 @@ export const handleOpenApiJson = async (
   json(res, 200, openApiDocument)
 }
 
-export const handleSwaggerUi = async (_req: IncomingMessage, res: ServerResponse): Promise<void> => {
+export const handleSwaggerUi = async (
+  _req: IncomingMessage,
+  res: ServerResponse,
+): Promise<void> => {
   html(res, 200, swaggerUiHtml)
 }

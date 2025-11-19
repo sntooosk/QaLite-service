@@ -1,4 +1,7 @@
-import { EnvironmentSummaryPayload, TaskSummaryPayload } from '../entities/task-summary.js'
+import {
+  EnvironmentSummaryPayload,
+  TaskSummaryPayload,
+} from '../entities/task-summary.js'
 
 type Primitive = string | number | boolean | undefined | null
 
@@ -13,7 +16,11 @@ const withFallback = (value: Primitive, fallback = 'Não informado'): string => 
 }
 
 const formatDurationHMS = (milliseconds?: number): string => {
-  if (typeof milliseconds !== 'number' || Number.isNaN(milliseconds) || milliseconds < 0) {
+  if (
+    typeof milliseconds !== 'number' ||
+    Number.isNaN(milliseconds) ||
+    milliseconds < 0
+  ) {
     return ''
   }
 
@@ -60,7 +67,10 @@ export class TaskSummaryFormatter {
 
     pushField('Ambiente', summary.identifier)
 
-    pushField('Tempo total', summary.totalTime || formatDurationHMS(summary.totalTimeMs) || '00:00:00')
+    pushField(
+      'Tempo total',
+      summary.totalTime || formatDurationHMS(summary.totalTimeMs) || '00:00:00',
+    )
 
     pushField('Cenários', numberField(summary.scenariosCount))
 
@@ -68,7 +78,9 @@ export class TaskSummaryFormatter {
       asText(summary.executedScenariosMessage) ||
       (typeof summary.executedScenariosCount === 'number'
         ? `${summary.executedScenariosCount} ${
-            summary.executedScenariosCount === 1 ? 'cenário executado' : 'cenários executados'
+            summary.executedScenariosCount === 1
+              ? 'cenário executado'
+              : 'cenários executados'
           }`
         : '')
     if (executedMessage) {
@@ -94,7 +106,9 @@ export class TaskSummaryFormatter {
       pushField('URLs monitoradas', 'Não informado')
     }
 
-    const attendees = formatList(summary.attendees?.map((person) => formatAttendee(person)))
+    const attendees = formatList(
+      summary.attendees?.map((person) => formatAttendee(person)),
+    )
 
     lines.push('')
     lines.push('👥 *Quem está participando*')

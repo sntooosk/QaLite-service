@@ -21,7 +21,10 @@ const router = new HttpRouter(
   }),
 )
 
-export const requestHandler = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
+export const requestHandler = async (
+  req: IncomingMessage,
+  res: ServerResponse,
+): Promise<void> => {
   try {
     if (!applyCors(req, res, config.allowedOrigins)) {
       return

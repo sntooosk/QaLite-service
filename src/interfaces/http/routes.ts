@@ -11,7 +11,10 @@ interface RouteDependencies {
   sendTaskSummary: SendTaskSummaryUseCase
 }
 
-const healthHandler = async (_req: IncomingMessage, res: ServerResponse): Promise<void> => {
+const healthHandler = async (
+  _req: IncomingMessage,
+  res: ServerResponse,
+): Promise<void> => {
   json(res, 200, { status: 'ok' })
 }
 

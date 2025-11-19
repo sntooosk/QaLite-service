@@ -6,11 +6,11 @@ manutenção sem depender de frameworks externos.
 
 ## Rotas
 
-| Método | Rota | Descrição |
-| --- | --- | --- |
-| `GET` | `/health` | Retorna `status: ok` para verificação rápida. |
-| `GET` | `/openapi.json` | Exibe o documento OpenAPI usado pelo Swagger. |
-| `GET` | `/docs` | Interface Swagger UI para testar a API. |
+| Método | Rota                  | Descrição                                                   |
+| ------ | --------------------- | ----------------------------------------------------------- |
+| `GET`  | `/health`             | Retorna `status: ok` para verificação rápida.               |
+| `GET`  | `/openapi.json`       | Exibe o documento OpenAPI usado pelo Swagger.               |
+| `GET`  | `/docs`               | Interface Swagger UI para testar a API.                     |
 | `POST` | `/slack/task-summary` | Envia um resumo simples de tarefa para um webhook do Slack. |
 
 > A documentação visual usa o CDN do Swagger UI. Caso prefira usar apenas a especificação, consuma `/openapi.json` diretamente.

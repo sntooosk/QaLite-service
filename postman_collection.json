@@ -13,12 +13,8 @@
         "header": [],
         "url": {
           "raw": "{{baseUrl}}/health",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "health"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
         },
         "description": "Verifica se o serviço está saudável e pronto para receber requisições."
       },
@@ -40,13 +36,8 @@
         },
         "url": {
           "raw": "{{baseUrl}}/slack/task-summary",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "slack",
-            "task-summary"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["slack", "task-summary"]
         },
         "description": "Dispara para o Slack o resumo de uma tarefa concluída. Informe uma mensagem direta no campo message ou os dados de ambiente em environmentSummary."
       },
