@@ -5,6 +5,7 @@ import { TaskSummaryPayload } from '../../domain/entities/task-summary.js'
 import { json } from './http-response.js'
 import { readJsonBody } from './http-request.js'
 import { RouteTable } from './router.js'
+import { handleOpenApiJson, handleSwaggerUi } from './swagger.js'
 
 interface RouteDependencies {
   sendTaskSummary: SendTaskSummaryUseCase
@@ -30,5 +31,11 @@ export const buildRouteTable = ({ sendTaskSummary }: RouteDependencies): RouteTa
   },
   '/slack/task-summary': {
     POST: buildSlackSummaryHandler(sendTaskSummary),
+  },
+  '/openapi.json': {
+    GET: handleOpenApiJson,
+  },
+  '/docs': {
+    GET: handleSwaggerUi,
   },
 })

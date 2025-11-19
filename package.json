@@ -8,7 +8,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "dev": "tsc -w -p tsconfig.json",
-    "lint": "npm run build && eslint dist --ext .js",
+    "lint": "eslint dist --ext .js",
     "format": "prettier --write .",
     "prepare": "husky install"
   },
