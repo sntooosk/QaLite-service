@@ -1,47 +1,56 @@
 # QA Manager Proxy API
 
-Servidor HTTP minimalista escrito em TypeScript que atua como ponte entre o QA Manager
-e o Slack. O código foi reduzido a poucos arquivos para facilitar a leitura e a
-manutenção sem depender de frameworks externos.
+Servidor HTTP minimalista escrito em TypeScript que encaminha resumos de QA para um webhook do Slack. O projeto segue uma estrutura enxuta em camadas (configuração, aplicação, domínio, infraestrutura e interfaces) para manter a separação de responsabilidades sem frameworks externos.
 
-## Rotas
+## Endpoints
 
 | Método | Rota                  | Descrição                                                   |
 | ------ | --------------------- | ----------------------------------------------------------- |
-| `GET`  | `/health`             | Retorna `status: ok` para verificação rápida.               |
-| `GET`  | `/openapi.json`       | Exibe o documento OpenAPI usado pelo Swagger.               |
-| `GET`  | `/docs`               | Interface Swagger UI para testar a API.                     |
-| `POST` | `/slack/task-summary` | Envia um resumo simples de tarefa para um webhook do Slack. |
+| `GET`  | `/health`             | Verificação rápida de disponibilidade.                      |
+| `GET`  | `/openapi.json`       | Documento OpenAPI 3.0 usado pelo Swagger UI.                |
+| `GET`  | `/docs`               | Interface do Swagger UI servida via CDN.                    |
+| `POST` | `/slack/task-summary` | Recebe um resumo de QA e repassa para o webhook configurado. |
 
-> A documentação visual usa o CDN do Swagger UI. Caso prefira usar apenas a especificação, consuma `/openapi.json` diretamente.
+> Caso não precise da interface visual, consuma diretamente a especificação em `/openapi.json`.
 
 ## Variáveis de ambiente
 
-Crie um arquivo `.env` (opcional) com os dados abaixo:
+Crie um arquivo `.env` (opcional) com os valores abaixo:
 
-```
+```bash
 SLACK_TASK_SUMMARY_WEBHOOK_URL=https://hooks.slack.com/services/...
 ALLOWED_ORIGINS=http://localhost:5173,https://seu-frontend.com
 PORT=3000
 ```
 
-## Scripts disponíveis
+## Como executar
 
 ```bash
-npm run build   # Transpila os arquivos TypeScript para a pasta dist
-npm start       # Executa o build gerado
-npm run dev     # Observa mudanças e recompila automaticamente
-npm run lint    # Lembra de rodar o build antes para gerar a pasta dist
-npm run format  # Formata o código fonte com Prettier
+npm install
+npm run build   # Transpila TypeScript para dist/
+npm start       # Executa o servidor já compilado
+# ou
+npm run dev     # Assiste alterações e recompila automaticamente
 ```
 
-> Dica: execute `npm run build` antes de `npm start` ou do deploy na Vercel, já que o
-> handler publicado fica em `dist/index.js`.
+## Qualidade e formatação
+
+```bash
+npm run lint    # Lembre de rodar o build antes para gerar dist/
+npm run format  # Formata todo o código com Prettier
+```
+
+## Estrutura de pastas
+
+- `src/config.ts`: leitura de variáveis de ambiente e defaults de CORS/porta.
+- `src/application`: casos de uso e portas (ex.: `SendTaskSummaryUseCase`).
+- `src/domain`: contratos e formatação de mensagens enviadas ao Slack.
+- `src/infrastructure`: integrações concretas (ex.: webhook do Slack).
+- `src/interfaces/http`: roteador HTTP, CORS, Swagger UI e handlers.
 
 ## Husky e commit lint
 
-Os hooks estão configurados em `.husky/`. Após instalar as dependências rode `npm run prepare`
-para ativá-los. O hook `commit-msg` agora utiliza o Commitlint com a configuração convencional:
+Os hooks vivem em `.husky/`. Após instalar dependências, rode `npm run prepare` para ativá-los. O hook `commit-msg` usa o Commitlint com a configuração convencional:
 
 ```js
 module.exports = {

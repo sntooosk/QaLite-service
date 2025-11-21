@@ -10,11 +10,6 @@ const asText = (value: Primitive): string => {
   return String(value).trim()
 }
 
-const withFallback = (value: Primitive, fallback = 'Não informado'): string => {
-  const sanitized = asText(value)
-  return sanitized || fallback
-}
-
 const formatDurationHMS = (milliseconds?: number): string => {
   if (
     typeof milliseconds !== 'number' ||
@@ -48,8 +43,8 @@ const formatAttendee = (entry?: AttendeeEntry): string => {
   return name || email
 }
 
-const numberField = (value?: number, fallback = '0'): string =>
-  typeof value === 'number' && value >= 0 ? String(value) : fallback
+const numberField = (value?: number): string =>
+  typeof value === 'number' && value >= 0 ? String(value) : ''
 
 const formatList = (entries?: (string | undefined | null)[]): string[] =>
   entries
@@ -61,18 +56,22 @@ export class TaskSummaryFormatter {
     const summary = environmentSummary ?? {}
     const lines: string[] = ['✨ *Resumo de QA*', '']
 
-    const pushField = (label: string, value: Primitive): void => {
-      lines.push(`• *${label}:* ${withFallback(value)}`)
+    const addLine = (label: string, value?: Primitive): void => {
+      const content = asText(value)
+      if (content) {
+        lines.push(`• *${label}:* ${content}`)
+      }
     }
 
-    pushField('Ambiente', summary.identifier)
+    addLine('Ambiente', summary.identifier)
 
-    pushField(
-      'Tempo total',
-      summary.totalTime || formatDurationHMS(summary.totalTimeMs) || '00:00:00',
-    )
+    const totalTime = summary.totalTime || formatDurationHMS(summary.totalTimeMs)
+    if (totalTime) {
+      addLine('Tempo total', totalTime)
+    }
 
-    pushField('Cenários', numberField(summary.scenariosCount))
+    const totalScenarios = numberField(summary.scenariosCount)
+    addLine('Cenários', totalScenarios)
 
     const executedMessage =
       asText(summary.executedScenariosMessage) ||
@@ -83,39 +82,39 @@ export class TaskSummaryFormatter {
               : 'cenários executados'
           }`
         : '')
-    if (executedMessage) {
-      pushField('Execução', executedMessage)
-    }
+
+    addLine('Execução', executedMessage)
 
     const fixTypeLabel = summary.fix?.type === 'storyfixes' ? 'Storyfixes' : 'Bugs'
-    pushField(`${fixTypeLabel} registrados`, numberField(summary.fix?.value))
+    const fixesRegistered = numberField(summary.fix?.value)
+    if (fixesRegistered) {
+      addLine(`${fixTypeLabel} registrados`, fixesRegistered)
+    }
 
-    pushField('Jira', summary.jira)
+    addLine('Jira', summary.jira)
 
-    const suiteName = withFallback(summary.suiteName)
+    const suiteName = asText(summary.suiteName)
     const suiteDetails = asText(summary.suiteDetails)
-    pushField('Suíte', suiteDetails ? `${suiteName} — ${suiteDetails}` : suiteName)
+    if (suiteName || suiteDetails) {
+      addLine('Suíte', suiteDetails ? `${suiteName} — ${suiteDetails}` : suiteName)
+    }
 
-    pushField('Participantes', numberField(summary.participantsCount))
+    addLine('Participantes', numberField(summary.participantsCount))
 
     const urls = formatList(summary.monitoredUrls)
-    if (urls && urls.length > 0) {
+    if (urls.length > 0) {
       lines.push('• *🌐 URLs monitoradas:*')
       urls.forEach((url) => lines.push(`  - ${url}`))
-    } else {
-      pushField('URLs monitoradas', 'Não informado')
     }
 
     const attendees = formatList(
       summary.attendees?.map((person) => formatAttendee(person)),
     )
 
-    lines.push('')
-    lines.push('👥 *Quem está participando*')
-    if (attendees && attendees.length > 0) {
+    if (attendees.length > 0) {
+      lines.push('')
+      lines.push('👥 *Quem está participando*')
       attendees.forEach((entry) => lines.push(`• ${entry}`))
-    } else {
-      lines.push('• Não informado')
     }
 
     return lines.join('\n')
