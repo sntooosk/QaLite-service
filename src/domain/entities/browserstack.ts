@@ -1,6 +1,6 @@
 export interface BrowserstackCredentials {
   username?: string
-  password?: string
+  acessKey?: string
 }
 
 export interface BrowserstackBuild {
