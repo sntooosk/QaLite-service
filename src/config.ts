@@ -32,21 +32,16 @@ const DEFAULT_ALLOWED_ORIGINS = [
   'https://qualitydigital-qamanager.vercel.app',
 ]
 
-const normalize = (value: string | undefined): string | undefined =>
-  value?.trim() || undefined
-
 loadEnvFile()
 
 export interface AppConfig {
   allowedOrigins: string[]
-  slackWebhookUrl?: string
   port: number
   isProduction: boolean
 }
 
 export const config: AppConfig = {
   allowedOrigins: parseList(process.env.ALLOWED_ORIGINS, DEFAULT_ALLOWED_ORIGINS),
-  slackWebhookUrl: normalize(process.env.SLACK_TASK_SUMMARY_WEBHOOK_URL),
   port: Number.parseInt(process.env.PORT ?? '3000', 10) || 3000,
   isProduction: process.env.NODE_ENV === 'production',
 }

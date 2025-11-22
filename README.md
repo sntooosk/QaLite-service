@@ -1,6 +1,6 @@
 # QA Manager Proxy API
 
-Servidor HTTP minimalista escrito em TypeScript que encaminha resumos de QA para um webhook do Slack. O projeto segue uma estrutura enxuta em camadas (configuração, aplicação, domínio, infraestrutura e interfaces) para manter a separação de responsabilidades sem frameworks externos.
+Servidor HTTP minimalista escrito em TypeScript que encaminha resumos de QA para um webhook do Slack informado pelo frontend. O projeto segue uma estrutura enxuta em camadas (configuração, aplicação, domínio, infraestrutura e interfaces) para manter a separação de responsabilidades sem frameworks externos.
 
 ## Endpoints
 
@@ -9,7 +9,7 @@ Servidor HTTP minimalista escrito em TypeScript que encaminha resumos de QA para
 | `GET`  | `/health`             | Verificação rápida de disponibilidade.                      |
 | `GET`  | `/openapi.json`       | Documento OpenAPI 3.0 usado pelo Swagger UI.                |
 | `GET`  | `/docs`               | Interface do Swagger UI servida via CDN.                    |
-| `POST` | `/slack/task-summary` | Recebe um resumo de QA e repassa para o webhook configurado. |
+| `POST` | `/slack/task-summary` | Recebe um resumo de QA e repassa para o webhook informado no payload. |
 
 > Caso não precise da interface visual, consuma diretamente a especificação em `/openapi.json`.
 
@@ -18,10 +18,11 @@ Servidor HTTP minimalista escrito em TypeScript que encaminha resumos de QA para
 Crie um arquivo `.env` (opcional) com os valores abaixo:
 
 ```bash
-SLACK_TASK_SUMMARY_WEBHOOK_URL=https://hooks.slack.com/services/...
 ALLOWED_ORIGINS=http://localhost:5173,https://seu-frontend.com
 PORT=3000
 ```
+
+> O webhook do Slack não é mais lido via `.env`; ele deve ser enviado no campo `webhookUrl` do corpo da requisição.
 
 ## Como executar
 

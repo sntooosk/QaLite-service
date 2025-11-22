@@ -10,9 +10,10 @@ export class SendTaskSummaryUseCase {
   ) {}
 
   async execute(payload: TaskSummaryPayload): Promise<void> {
+    const webhookUrl = payload?.webhookUrl
     const directMessage = payload?.message?.trim()
     if (directMessage) {
-      await this.notifier.sendMessage(directMessage)
+      await this.notifier.sendMessage(directMessage, webhookUrl)
       return
     }
 
@@ -21,6 +22,6 @@ export class SendTaskSummaryUseCase {
     }
 
     const formattedMessage = this.formatter.buildMessage(payload)
-    await this.notifier.sendMessage(formattedMessage)
+    await this.notifier.sendMessage(formattedMessage, webhookUrl)
   }
 }

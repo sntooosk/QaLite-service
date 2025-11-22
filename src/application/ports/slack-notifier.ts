@@ -1,3 +1,3 @@
 export interface SlackNotifier {
-  sendMessage(message: string): Promise<void>
+  sendMessage(message: string, webhookUrl?: string | null): Promise<void>
 }

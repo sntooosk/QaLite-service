@@ -10,7 +10,7 @@ import { json } from './interfaces/http/http-response.js'
 import { HttpRouter } from './interfaces/http/router.js'
 import { buildRouteTable } from './interfaces/http/routes.js'
 
-const slackNotifier = new SlackWebhookNotifier(config.slackWebhookUrl)
+const slackNotifier = new SlackWebhookNotifier()
 const formatter = new TaskSummaryFormatter()
 
 const sendTaskSummaryUseCase = new SendTaskSummaryUseCase(formatter, slackNotifier)

@@ -6,7 +6,7 @@ export const openApiDocument = {
     title: 'QA Manager Proxy API',
     version: '2.0.0',
     description:
-      'API minimalista que recebe resumos de execução de QA e os encaminha para um webhook do Slack.',
+      'API minimalista que recebe resumos de execução de QA e os encaminha para o webhook do Slack informado na requisição.',
   },
   servers: [
     {
@@ -40,7 +40,7 @@ export const openApiDocument = {
       post: {
         summary: 'Enviar resumo de QA para o Slack',
         description:
-          'Aceita um resumo estruturado ou uma mensagem pronta e encaminha para o webhook configurado.',
+          'Aceita um resumo estruturado ou uma mensagem pronta e encaminha para o webhook do Slack informado no payload.',
         requestBody: {
           required: true,
           content: {
@@ -50,12 +50,17 @@ export const openApiDocument = {
                   { $ref: '#/components/schemas/TaskSummaryPayload' },
                   {
                     type: 'object',
-                    required: ['message'],
+                    required: ['message', 'webhookUrl'],
                     properties: {
                       message: {
                         type: 'string',
                         description: 'Mensagem já formatada para o Slack.',
                         example: 'Deploy concluído com sucesso.',
+                      },
+                      webhookUrl: {
+                        type: 'string',
+                        format: 'uri',
+                        description: 'Webhook do Slack que receberá a mensagem.',
                       },
                     },
                   },
@@ -79,10 +84,7 @@ export const openApiDocument = {
             },
           },
           400: {
-            description: 'Erro de validação ou payload inválido.',
-          },
-          503: {
-            description: 'Webhook do Slack não configurado.',
+            description: 'Erro de validação, payload inválido ou webhook ausente.',
           },
         },
       },
@@ -92,12 +94,17 @@ export const openApiDocument = {
     schemas: {
       TaskSummaryPayload: {
         type: 'object',
-        required: ['environmentSummary'],
+        required: ['environmentSummary', 'webhookUrl'],
         properties: {
           message: {
             type: 'string',
             description:
               'Mensagem enviada diretamente ao Slack (ignorando o resumo detalhado).',
+          },
+          webhookUrl: {
+            type: 'string',
+            format: 'uri',
+            description: 'Webhook do Slack que receberá a mensagem.',
           },
           environmentSummary: { $ref: '#/components/schemas/EnvironmentSummaryPayload' },
         },

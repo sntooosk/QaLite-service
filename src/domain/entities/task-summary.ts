@@ -25,4 +25,5 @@ export interface EnvironmentSummaryPayload {
 export interface TaskSummaryPayload {
   message?: string
   environmentSummary?: EnvironmentSummaryPayload
+  webhookUrl?: string | null
 }
